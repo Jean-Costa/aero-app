@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Container from '@material-ui/core/Container';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
@@ -8,6 +8,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Input from '@material-ui/core/Input';
 import Button from '@material-ui/core/Button';
+import axios from 'axios'; 
 
 
 const useStyles = makeStyles((theme) => ({
@@ -45,14 +46,7 @@ const useStyles = makeStyles((theme) => ({
       },
   }));
 
-  const locais = [
-    {Id: 1 , nome: "CGH	SBSP Aeroporto Internacional de São Paulo / Congonhas"},
-    {Id: 2 , nome: "GIG	SBGL Aeroporto Internacional do Rio de Janeiro / Galeão-Antônio Carlos Jobim"},
-    {Id: 3 , nome: "VCP	SBKP Aeroporto Internacional de Viracopos / Campinas"},
-    {Id: 4 , nome: "FLN	SBFL Aeroporto Internacional de Florianópolis / Hercílio Luz"},
-    {Id: 5 , nome: "REC	SBRF Aeroporto Internacional do Recife/ Guararapes – Gilberto Freyre"},
-    {Id: 6 , nome: "CNF	SBCF Aeroporto Internacional de Minas Gerais / Confins – Tancredo Neves"},
-  ];
+  
 
   const classeAviao = [
     {Id: 1 , nome: "Econômica"},
@@ -65,7 +59,15 @@ export const Inicial = (props) => {
     const [origem, setOrigem] = useState("");
     const origemChange = (e) => {
         setOrigem(e.target.value);
-        };   
+        };  
+        
+    const [locais, setLocais] = useState([]);
+
+    useEffect(() => { 
+        console.log("Carregou");
+        axios.get('http://localhost:5000/api/Local').then(resultado => setLocais(resultado.data))
+        .catch(erro => console.log(erro));
+    }, []); 
     
     const classesa = useStyles();
     const [destino, setDestino] = useState("");
